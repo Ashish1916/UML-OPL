@@ -1,0 +1,4 @@
+let nil = \x . true in
+let cons = \h . \t . \f . f h t in
+let isempty = \l . l (\h . \t . false) in
+isempty nil

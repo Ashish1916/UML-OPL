@@ -1,0 +1,3 @@
+let apply = \f . \x . f x in
+let square = \x . x * x in
+apply square 5

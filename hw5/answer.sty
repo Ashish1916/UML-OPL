@@ -1,0 +1,84 @@
+\NeedsTeXFormat{LaTeX2e}[2.09]
+\ProvidesPackage{answer}[2004/04/20 v2.7a exam style file]
+
+% Exam style file package for LaTeX
+% Andrew Myers, Cornell University
+% April 2004
+  % Use grep '^%' to extract documentation
+%
+\RequirePackage{framed}
+\DeclareOption{solution}{\solutiontrue}
+\DeclareOption{solutions}{\solutiontrue}
+\DeclareOption{soln}{\solutiontrue}
+\DeclareOption{answer}{\solutiontrue}
+\DeclareOption{answers}{\solutiontrue}
+\DeclareOption{bluebook}{\bluebooktrue}
+\DeclareOption{boxanswers}{\boxanswerstrue}
+
+% Package options:
+%
+%   solution: include solutions, don't put problems on separate pages
+%   bluebook: do not leave space to answer questions 
+%   instructions: include exam instructions
+%   boxanswers: draw a box around answers
+%
+\newif\ifsolution
+\newif\ifbluebook
+\newif\ifboxanswers
+\solutionfalse
+\bluebookfalse
+\boxanswersfalse
+
+\ProcessOptions
+
+
+% \ans{lines}{answer}
+%   Depending on whether the solution option is used, either gives the
+%   answer or leaves "lines" lines of blank space (if bluebook option not used.)
+% \tfans{answer}
+%   Gives the answer to a true/false question if [solution] is used.
+%   Doesn't leave blank space if not the solution version.
+% \begin{answer}{lines}...\end{answer}
+%   Works like \ans but interprets the answer text
+%   in a more robust way. This helps if you are trying to put in
+%   verbatim code.
+%
+
+\ifsolution
+\newcommand{\ans}[2]{%
+\begin{answer}{#1}%
+#2%
+\end{answer}}
+
+\newcommand{\tfans}[1]{\begin{center}{\it #1}\end{center}}
+
+\newenvironment{answer}[1]{\par%
+\ifboxanswers % adjust the linewidth so the text box fits inside the fbox
+\advance\linewidth -\fboxsep
+\advance\linewidth -\fboxsep
+\advance\linewidth -\fboxrule
+\advance\linewidth -\fboxrule
+\fi
+\begin{MakeFramed}{\hsize\linewidth}
+\noindent\textbf{Answer:~}\nopagebreak \em % typeset the answer in italics
+}{
+\end{MakeFramed}}
+\else
+\newcommand{\ans}[2]{\ifbluebook\else\vspace{#1\baselineskip}\vfil\fi}
+\newenvironment{answer}[1]{\ifbluebook\relax\else\vspace{#1\baselineskip}\vfil\fi%
+\setbox0=\vbox\bgroup}{\egroup} % consume the answer
+
+\newcommand{\tfans}[1]{}
+\fi
+
+\ifboxanswers
+\newcommand\presentanswer[1]{
+%  \fbox{
+%\begin{minipage}{\linewidth}%
+        {\textbf{Answer:}\nopagebreak\vspace{1ex}\\  {#1}}%
+%     \end{minipage}
+%}
+}
+\else
+\newcommand\presentanswer[1]{{\textbf{Answer:}\nopagebreak\vspace{1ex}\\ \it #1}}
+\fi

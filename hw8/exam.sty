@@ -1,0 +1,315 @@
+\NeedsTeXFormat{LaTeX2e}[2.09]
+\ProvidesPackage{exam}[2004/04/20 v2.7a exam style file]
+
+% Exam style file package for LaTeX
+% Andrew Myers, Cornell University
+% April 2004
+  % Use grep '^%' to extract documentation
+%
+\DeclareOption{solution}{\solutiontrue}
+\DeclareOption{bluebook}{\bluebooktrue}
+\DeclareOption{instructions}{\instructionstrue}
+\DeclareOption{boxanswers}{\boxanswerstrue}
+
+% Package options:
+%
+%   solution: include solutions, don't put problems on separate pages
+%   bluebook: do not leave space to answer questions 
+%   instructions: include exam instructions
+%   boxanswers: draw a box around answers
+%
+\newif\ifsolution
+\newif\ifbluebook
+\newif\ifinstructions
+\newif\ifboxanswers
+\solutionfalse
+\bluebookfalse
+\instructionsfalse
+\boxanswersfalse
+
+\ProcessOptions
+
+% Commands:
+%
+% \maketitle creates the standard exam header
+% \title{title} sets the name of the exam
+% \date{date} sets the date of the exam
+%
+\renewcommand\maketitle{
+\begin{flushleft}
+{\large
+\textsf{\@title \hfill \@date}}\\
+\hrulefill
+\end{flushleft}
+\ifsolution{\hfil\LARGE\bf Solutions\hfil}\fi
+}
+
+% All questions are found in the 'questions' environment, e.g.:
+% \begin{questions}
+%  \question{name}{pts}
+%  \question{name}{pts}
+%  ...
+% \end{questions}
+% \label{lastpage}
+% \end{document}
+%  
+% \numquestions is the number of questions in the exam.
+%
+
+\AtBeginDocument{ % delay until we read in the .aux file if any...
+\ifx\r@lastprob\@undefined%
+\newcommand\numquestions{1}%
+\else%
+\newcommand\numquestions{\ref{lastprob}}%
+\fi
+}
+
+\newenvironment{questions}{
+\begin{enumerate}}%
+{\label{lastprob}\exam@checkpartpts\end{enumerate}}
+
+
+% \questionpts{N} gives the number of points assigned to question N.
+%
+\newcommand\questionpts[1]{%
+\@ifundefined{exam@questionpts\romannumeral #1}
+{???%
+\PackageWarning{exam}{Question #1 does not have an assigned point value}}
+{\csname exam@questionpts\romannumeral #1\endcsname}
+}
+
+\newcommand\exam@questionpts[2]{\expandafter\gdef%
+  \csname exam@questionpts\romannumeral #1\endcsname {#2}
+\addtocounter{exam@total}{#2}
+}
+
+\newcounter{exam@partnum}
+\newcounter{exam@total}
+\newcounter{exam@questiontotal}
+
+% \totalpts is the total number of points in all questions.
+%
+\newcommand\totalpts{\arabic{exam@total}}
+
+% \question{title}{points} introduces a new question
+%
+\newcommand\question[2]{%
+\ifnum\@enumdepth > 1%
+\PackageError{exam}{Exam questions cannot be nested inside lists}\@eha%
+\else%
+\exam@checkpartpts%
+\ifbluebook\relax\else\dnp\fi
+\item {\sf #1} \pts{#2}%
+\setcounter{exam@partnum}{0}%
+\setcounter{exam@questiontotal}{0}%
+\writequestionpts{\number\value{enumi}}{#2}%
+\fi}
+
+ % Write question point information to .aux
+\newcommand\writequestionpts[2]{
+\exam@questionpts{\number\value{enumi}}{#2}
+\protected@write\@auxout{}%
+{\string\exam@questionpts{#1}{#2}}
+}
+
+ % Check whether the points on the parts sum up to the declared
+ % total for the question.
+\def\exam@checkpartpts{
+\ifnum \number\value{enumi}=0
+\relax
+\else
+\@ifundefined{exam@questionpts\romannumeral\number\value{enumi}}%
+{}% don't have the data yet
+{
+\def\m{\number\value{exam@questiontotal}}
+\def\n{\questionpts{\number\value{enumi}}}
+\ifnum\value{exam@partnum}=0
+\relax
+\else
+\ifnum \m=\n
+\relax
+\else
+\PackageWarning{exam}{Question \number\value{enumi}: total of parts is \m, expected \n}%
+\fi
+\fi
+}
+\fi
+}
+
+% Question parts occur within the 'parts' environment. It keeps track of
+% the current part number, so you can have multiple parts environments
+% within a single question. E.g.,
+% \question{title}{points}
+%   \begin{parts}
+%     \newpart{10} ...
+%     \newpart{15} ...
+%   \end{parts} ...
+%
+\newenvironment{parts}{
+\ifnum\@enumdepth = 1
+\begin{enumerate}
+\setcounter{enumii}{\value{exam@partnum}}
+\else
+\PackageError{exam}{Question parts must occur inside questions}\@eha%
+\fi}%
+{\setcounter{exam@partnum}{\value{enumii}}%
+\end{enumerate}}
+
+% A problem part is introduced as \newpart{points}
+%
+\newcommand\newpart[1]{%
+\ifnum\@enumdepth = 2
+\item\pts{#1}%
+\addtocounter{exam@questiontotal}{#1}
+\writequestionpart{\number\value{enumi}}{\number\value{enumii}}
+\else
+\PackageError{exam}%
+{Question parts must occur inside the "parts" environment}\@eha%
+\fi
+}
+
+\newcommand\writequestionpart[2]{
+\protected@write\@auxout{}%
+{\string\exam@questionpart{#1}{#2}}
+}
+
+\newcommand\exam@questionpart[2]{%
+  \expandafter\gdef%
+  \csname exam@questionpart@\romannumeral #1\endcsname {#2}
+}
+
+% The comment \showparts generates "parts a-x" where "x" is
+% the last part of the current problem.
+%
+\newcommand\showparts{parts a--\lastpart}
+
+% \lastpart is the name of the last part of the current problem
+%
+\newcommand\lastpart{%
+\def\n{\romannumeral\value{enumi}}%
+\@ifundefined{exam@questionpart@\n}{???%
+\PackageWarning{exam}{Number of parts for question \arabic{enumi} is not yet known}}{%
+\def\n{\roman{enumi}}%
+\@alph{\csname exam@questionpart@\n\endcsname}%
+}}
+
+% The environment tfparts is like parts, but \newpart leaves a space
+% to write an answer and there is no point value given.
+%
+\newenvironment{tfparts}{
+\begin{parts}
+\ifsolution
+\else
+\renewcommand{\theenumii}{\alph{enumii}. \answerslot~}
+\fi
+\renewcommand\newpart[1]{%
+\writequestionpart{\number\value{enumi}}{\number\value{enumii}}
+\ifnum\@enumdepth = 2
+\item%
+\addtocounter{exam@questiontotal}{##1}
+\writequestionpart{\number\value{enumi}}{\number\value{enumii}}
+\else
+\PackageError{exam}%
+{Question parts must occur inside the "parts" environment}\@eha%
+\fi
+}}%
+{\end{parts}}
+\newcommand\answerslot{\ensuremath{\_\!\_\!\_\!\_\!\_\!\_\!\_\!\_\!\_}}
+
+% \ans{lines}{answer}
+%   Depending on whether the solution option is used, either gives the
+%   answer or leaves "lines" lines of blank space (if bluebook option not used.)
+% \tfans{answer}
+%   Gives the answer to a true/false question if [solution] is used.
+%   Doesn't leave blank space if not the solution version.
+% \begin{answer}{lines}...\end{answer}
+%   Works like \ans but interprets the answer text
+%   in a more robust way. This helps if you are trying to put in
+%   verbatim code.
+%
+
+\ifsolution
+\newcommand{\ans}[2]{%
+\begin{answer}{#1}%
+#2%
+\end{answer}}
+
+\newcommand{\tfans}[1]{\begin{center}{\it #1}\end{center}}
+
+\newenvironment{answer}[1]{\par%
+\ifboxanswers % adjust the linewidth so the text box fits inside the fbox
+\advance\linewidth -\fboxsep
+\advance\linewidth -\fboxsep
+\advance\linewidth -\fboxrule
+\advance\linewidth -\fboxrule
+\fi
+\hsize\linewidth
+\setbox0=\vbox\bgroup\em % typeset the answer in italics
+}{\egroup\presentanswer{\box0}}
+\else
+\newcommand{\ans}[2]{\ifbluebook\else\vspace{#1\baselineskip}\vfil\fi}
+\newenvironment{answer}[1]{\ifbluebook\relax\else\vspace{#1\baselineskip}\vfil\fi%
+\setbox0=\vbox\bgroup}{\egroup} % consume the answer
+
+\newcommand{\tfans}[1]{}
+\fi
+
+% \np : do a \newpage in the test version, no \newpage in the solutions.
+%
+\ifsolution
+\def\np{\relax}
+\def\dnp{\relax}
+\else
+\def\np{\newpage}
+\def\dnp{\cleardoublepage}
+\fi
+
+% \scorebox: Generate a box to write the scores of all the questions in.
+
+\newcommand\scorebox{
+\def\makelines{
+  \addtocounter{scoreboxqnum}{1}%
+  \arabic{scoreboxqnum} & \questionpts{\value{scoreboxqnum}} & \\ \hline%
+  \ifnum\value{scoreboxqnum} < \numquestions \makelines \fi
+}
+\begin{tabular}{|c|c|c|}
+\hline
+Problem & Points & Score \\ \hline %
+\newcounter{scoreboxqnum}%
+\makelines
+Total & \totalpts & \\ \hline
+\end{tabular}
+}
+
+% Miscellaneous formatting
+%
+% \pts{n} is used to write the number of points [n] that
+% a question or part of a question is written. This can
+% be overridden.
+%
+\newcommand{\pts}[1]{{[#1 \ifnum #1=1 pt\else pts\fi]}}
+
+% \presentanswer{text} is used to present the answer 'text'.
+% Can be overridden to present answers differently.
+
+\ifboxanswers
+\newcommand\presentanswer[1]{
+    \fbox{\parbox{\linewidth}{\textbf{Answer:}\nopagebreak\vspace{1ex}\\ \it #1}}}
+\else
+\newcommand\presentanswer[1]{{\textbf{Answer:}\nopagebreak\vspace{1ex}\\ \it #1}}
+\fi
+
+%
+% References to problem parts are generated to look
+% like "1(a)" rather than "1a".
+%
+\renewcommand{\labelenumii}{\theenumii}
+\renewcommand{\theenumii}{(\alph{enumii})}
+
+% Page layout has 1-inch margins on letter-size paper
+%
+\setlength{\textwidth}{6.5in}         % Width of text line.
+\setlength{\textheight}{9in}
+\setlength{\topmargin}{-0.75in}
+\setlength{\oddsidemargin}{0in}
+\setlength{\evensidemargin}{0in}

@@ -1,0 +1,119 @@
+%% Given to students
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage{plcourse}
+\usepackage{answer}
+\usepackage{ttquot}
+\usepackage{proof}
+\usepackage{stmaryrd}
+\usepackage{angle}
+\usepackage{amssymb}
+\usepackage{hyperref}
+\usepackage{graphicx}
+\usepackage{tikz}
+\usepackage{tikz-qtree}
+\usepackage{xspace}
+\usepackage{xcolor}
+\usepackage{listings}
+
+
+\homework{5}
+
+
+\begin{document}
+\hwsubheader
+
+\vspace{5cm}
+{\LARGE
+\begin{tabular}{rp{0.6\linewidth}}
+  Name:&\todo{Add your name here}\\
+  UML ID:&\todo{Add your student ID here}\\
+  Collaborators:&{\normalsize
+    \todo{Put your collaborators here, if any.}
+    }
+\end{tabular}
+}
+
+\vfill
+\textit{Make sure that the remaining pages of this assignment do not contain any identifying information.}
+\vfill
+
+\newpage
+
+
+\begin{question}{Substitution}{(20 points)}
+%%  Uncomment the following lines to see how they render in PDF.
+  
+%% Inductive definition of capture-avoiding substitution.
+%% \begin{align*}
+%%     \subst{y}{e}{x} & =
+%%     \begin{cases}
+%%       e & \text{if $x = y$}\\
+%%       y & \text{if $x \ne y$}
+%%    \end{cases} \\
+%% \subst{(e_1~e_2)}{e}{x} &= \subst{e_1}{e}{x}~\subst{e_2}{e}{x}\\
+%% \subst{(\lam{y}{e'})}{e}{x} &=
+%% \begin{cases}
+%% \lam{y}{e'} & \text{if $x = y$}\\
+%% \lam{y}{(\subst{e'}{e}{x})} & \text{if $x \ne y$ and $y\not\in\mathit{FV}(e)$}\\
+%% \lam{z}{(\subst{(\subst{e'}{z}{y})}{e}{x})} &
+%% \text{if $x \ne y$ and $y\in\mathit{FV}(e)$, where} \\
+%%  & \text{ \qquad $z \not\in \mathit{FV}(e) \cup \mathit{FV}(e') \cup \{x\}$} \\
+%% \end{cases}
+%% \end{align*}
+
+% To write free variables use $\mathit{FV}(e)$ to represent free variables in an expression e.
+% To write union operator use \cup.
+% To write lambda terms, use: \lam{x}{body}
+% Example: \lam{x}{x~y} produces λx.x y
+% To write a lambda use \lam{y}{a~b} where {a~b} is the body of this lambda which is an application.
+% Use \ne to write ≠ , \in to write ∈ , and \not \in to write ∉.
+
+  \begin{subquestion}
+    \todo{  Write your solution here.}
+    
+
+% Use \mathit{FV} while writing the inductive definition using the following format:
+% \begin{align*}
+%     \mathit{FV}{case 1}
+%     \mathit{FV}{case 2}
+%     \mathit{FV}{case 3}
+% \end{align*}
+  
+\end{subquestion}
+
+
+\begin{subquestion}
+
+  \todo{Write your solution here.}
+  
+ %%  \begin{enumerate}
+ %%  \item $\subst{(\lam{z}{y~\lam{y}{y~z~w}})}{(\lam{x}{x})}{y}$
+ %%  \item $\subst{((\lam{x}{x~y})~(\lam{z}{x~z}))}{(\lam{w}{w~w})}{x}$
+ %%  \item $\subst{(\lam{y}{x~y})}{(\lam{z}{y~z})}{x}$
+ %%  \item $\subst{((\lam{x}{\lam{w}{w~x}})~\lam{y}{x~y})}{(w~w)}{x}$
+ %% \end{enumerate}
+ 
+
+ % Show all steps and then final result for each.
+ % You can use the enumerate or itemize environment to have it display as a list. Enumerate is given to you.
+ % Use: $\subst{(\lam{a}{a})} {a}{b}$ where b is the variable or expression that you're replacing for a in the expression \lambda a.a
+ % Start writing answer here
+ \begin{enumerate}
+     \item 
+     \item 
+     \item
+     \item 
+ \end{enumerate}
+\end{subquestion}
+
+\begin{subquestion}
+% Note: You need to find substitution examples that produce different results under the original vs alternate definitions.
+  \todo{Write your solution here.}
+
+
+\end{subquestion}
+
+\end{question}
+
+\end{document}

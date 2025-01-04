@@ -1,0 +1,202 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage{plcourse}
+\usepackage{ttquot}
+\usepackage{proof}
+\usepackage{stmaryrd}
+\usepackage{angle}
+\usepackage{amssymb}
+\usepackage{hyperref}
+\usepackage[bluebook,boxanswers]{answer}
+\usepackage{graphicx}
+\usepackage{tikz}
+\usepackage{tikz-qtree}
+\usepackage{xspace}
+\usepackage{xcolor}
+\usepackage{listings}
+
+%% Synatx highlighting for OCaml
+\lstset{
+ language=caml,
+ columns=[c]fixed,
+% basicstyle=\small\ttfamily,
+ keywordstyle=\bfseries,
+ upquote=true,
+ commentstyle=,
+ breaklines=true,
+ showstringspaces=false,
+ stringstyle=\color{blue},
+ literate={'"'}{\textquotesingle "\textquotesingle}3
+}
+
+
+\homework{4}
+
+%\newcommand{\largestep}[1]{#1\textsubscript{}} 
+\newcommand{\largestep}[1]{\rulename{#1${}_{\text{Lrg}}$}}
+\newcommand{\tlet}{\textbf{let }}
+\newcommand{\tin}{\textbf{in }}
+\newcommand{\tref}{\textbf{ref }}
+\newcommand{\tint}{\textbf{int }}
+
+\begin{document}
+\hwsubheader
+
+\vspace{5cm}
+{\LARGE
+\begin{tabular}{rp{0.6\linewidth}}
+  Name:&\todo{Add your name here}\\
+  UML ID:&\todo{Add your student ID here}\\
+  Collaborators:&{\normalsize
+    \todo{Put your collaborators here, if any.}
+    }
+\end{tabular}
+}
+
+\vfill
+\textit{Make sure that the remaining pages of this assignment do not contain any identifying information.}
+\vfill
+%%% NOTE:
+% %%  Use this syntax to write inference rules
+      % %%   \infrule[Name]
+      % %%      {
+      % %%       a_1 \in A \quad a_2 \in A
+      % %%      }
+      % %%      {
+      % %%       a \in A
+      % %%      }
+      % %%      {
+      % %%       side condition
+      % %%      }
+     % %%
+
+     
+     %% You can replace <RULE-NAME> with the name of
+     %% actual rule.
+     
+     %% Use \dots if you need to add something like 
+     %% "..." to the end of your small step semantics
+
+     %% Follow this pattern to write lareg step semantics
+     %% Replace the condition as necessary
+     %%\begin{center}
+     %%\infrule[\largestep{RULE-NAME}]{a \stepsto v}
+     %%{\cond{\TRUE}{a}{\FALSE} \stepsto v }{side-condition}
+     %%\end{center}
+
+
+     %%% Use this for structuring proofs.
+     % \begin{description}
+     %     \item[case 1]: ...
+     %     \item[case 2]: ....
+     %     \item[case n]: ...
+     % \end{description}
+
+     %% Use this to write and state theorems.
+     % \begin{theorem}
+     %    [Insert theorem statement]
+     % \end{theorem}
+
+    %% Use this to wrap your proofs.
+    % \begin{proof}
+    %     [Insert proof]
+    % \end{proof}
+
+    % For more help please refer to this link:
+    % https://www.overleaf.com/learn/latex/Lists
+
+
+
+\newpage
+
+
+\begin{question}{Equivalence of Semantics}{(40 points)}
+  Recall the grammar for the calculator language used from HW2 and HW3. In this question, you will prove the equivalence of large-step and multi-step semantics.
+
+  \medskip
+  % \textbf{NOTE:} You have to use/fix your small-step and large-step inference rules from your HW2 and HW3 and use them in the proof. You \textbf{must} copy/write all the inference rules again for reference. During grading, we will not refer to your previous ``HW2'' or ``HW3'' submissions. As such, your current submission must be self-contained.
+  
+    \[
+    \begin{array}{l l l}
+      n & \in & \Z \\
+      a &::= & n \mid a_1 + a_2 \mid a_1 \times a_2 \\
+      b &::= & \TRUE \mid \FALSE \mid a = a \mid a \ne a \\
+       & & \mid a \le a \mid a \gt a \mid \neg b \mid b \&\& b \\
+      v & ::= & n \mid \TRUE \mid \FALSE
+    \end{array}
+    \]
+
+
+  \begin{subquestion} Prove the following theorem using induction.
+    \begin{theorem*}[Equivalence of Semantics for Arithmetic Expressions] For all expressions $a$,
+integers $n$, we have:
+\[ a \stepsto n \iff a \stepsone^* n   .\]
+\end{theorem*}
+
+    You need to prove the theorem in both the directions. That is, you need to provide proofs for the following statements.
+    \[\text{If } a \stepsto n \text{ then }  a \stepsone^* n   \]
+    and
+    \[\text{If } a \stepsone^* n  \text{ then }  a \stepsto n   .\]
+
+    Colloquially, we refer to the former statement as forward direction and the latter as the reverse direction.
+    
+      \begin{subsubquestion}
+      What is the set that you will induct on in the forward direction?
+      \end{subsubquestion}
+
+    \begin{subsubquestion}
+      What is the property that you will induct on in the forward direction? Formally state the property.
+
+      \medskip
+      \textit{\textbf{Hint:}} See Lecture 04 for an example formal statement.
+    \end{subsubquestion}
+
+    \begin{subsubquestion}
+      Write the inductive reasoning principle for the forward direction.
+    \end{subsubquestion}
+
+    \begin{subsubquestion}
+      Provide the actual proof for both forward and reverse directions.
+      \begin{proof}
+        %Proof should go here.
+      \end{proof}
+    \end{subsubquestion}
+    
+  \end{subquestion}
+
+  \begin{subquestion} Prove the following theorem using induction.
+\begin{theorem*}[Equivalence of Semantics for Boolean Expressions] For all expressions $a$,
+values $v \in \{\TRUE, \FALSE \}$, we have:
+\[ b \stepsto v \iff b \stepsone^* v   .\]
+\end{theorem*}
+      \begin{subsubquestion}
+      What is the set that you will induct on in the forward direction?
+      \end{subsubquestion}
+
+    \begin{subsubquestion}
+      What is the property that you will induct on in the forward direction? Formally state the property.
+      
+    \end{subsubquestion}
+
+    \begin{subsubquestion}
+      Write the inductive reasoning principle for the forward direction.
+    \end{subsubquestion}
+
+    \begin{subsubquestion}
+      Provide the  proof for both forward and reverse directions. Note that you have to handle the proof for all cases.
+      You cannot state ``same as above'' or ``similar to the case''.
+
+      \medskip
+      \textit{\textbf{Hint:}} When you handle cases that involve comparison between arithmetic expressions, you may need to invoke the lemmas proved in the previous part of the question.
+    \begin{proof}
+       %Proof should go here.
+    \end{proof}
+    \end{subsubquestion}
+
+\end{subquestion}
+  
+\begin{answer}{}
+\end{answer}
+
+\end{question}
+\end{document}

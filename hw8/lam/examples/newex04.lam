@@ -1,0 +1,3 @@
+let multiapply = \f . \x . \y . f x y in 
+let add = \x . \y . x + y in 
+multiapply add 20 22

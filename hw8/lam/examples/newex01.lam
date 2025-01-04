@@ -1,0 +1,3 @@
+let apply = \f . \x . f x in 
+let inc = \n . n + 1 in 
+apply inc 5

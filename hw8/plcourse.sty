@@ -1,0 +1,357 @@
+\NeedsTeXFormat{LaTeX2e}[2.09]
+\ProvidesPackage{plcourse}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% plcourse.sty
+%
+% This style is intended to make it easier to write homeworks and
+% lectures for programming language courses.
+%
+% Options:
+%   doublespace
+%       Uses doublespacing.
+% 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% Options
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\RequirePackage{setspace}
+\DeclareOption{doublespace}{\doublespacing}
+%
+%
+\ProcessOptions
+
+\RequirePackage{amsfonts}
+\RequirePackage{amsmath}
+\RequirePackage{amssymb}
+\RequirePackage{amsthm}
+\RequirePackage{angle}
+\RequirePackage{palatino}
+\RequirePackage{xcolor}
+\RequirePackage{ifthen}
+\RequirePackage{fancyhdr, lastpage}
+
+
+
+
+
+%%% Make sections usable for problems.
+
+\renewcommand\section{\@startsection {section}{1}{\z@}%
+{-3.5ex \@plus -1ex \@minus -.2ex}%
+{2.3ex \@plus.2ex}%
+{\flushleft\large\textbf}}
+
+\renewcommand\subsection{\@startsection {subsection}{1}{\z@}%
+{-3.5ex \@plus -1ex \@minus -.2ex}%
+{2.3ex \@plus.2ex}%
+{\flushleft\normalsize\textbf}}
+
+\renewcommand\subsubsection{\@startsection {subsubsection}{1}{\z@}%
+{-3.5ex \@plus -1ex \@minus -.2ex}%
+{2.3ex \@plus.2ex}%
+{\flushleft\normalsize\textbf}}
+
+\renewcommand{\labelenumii}{\theenumii}
+\renewcommand{\theenumii}{(\alph{enumii})}
+%%% Set up for fullpage 8.5x11 paper
+\topmargin 0pt
+\advance \topmargin by -\headheight
+\advance \topmargin by -\headsep
+     
+\textheight 8.9in
+     
+\oddsidemargin 0pt
+\evensidemargin \oddsidemargin
+\marginparwidth 0.5in
+     
+\textwidth 6.5in
+
+%%% This puts in the header on homeworks (use \hwheader or \mischeader
+%%% instead of \maketitle)
+\newcommand{\thehomework}{X}
+\newcommand{\thedue}{XX}
+\newcommand{\homework}[1]{\renewcommand{\thehomework}{#1}}
+\newcommand{\due}[1]{\renewcommand{\thedue}{#1}}
+\newcommand{\thelecture}{X}
+\newcommand{\thelecdate}{XX}
+\newcommand{\thelectitle}{Lecture Title}
+\newcommand{\lecture}[1]{\renewcommand{\thelecture}{#1}}
+\newcommand{\lecdate}[1]{\renewcommand{\thelecdate}{#1}}
+\newcommand{\lectitle}[1]{\renewcommand{\thelectitle}{#1}}
+
+\pagestyle{fancy}
+\fancyhf{}
+\cfoot{Page \thepage}
+
+
+\newcommand\hwheader{
+\mischeader{Assignment \thehomework}{DUE: \thedue}
+    \renewcommand{\labelenumi}{(\alph{enumi})}
+    \renewcommand{\labelenumii}{\roman{enumii}.}
+}
+
+\newcommand\hwsubheader{
+\mischeader{Assignment \thehomework}{}
+    \renewcommand{\labelenumi}{(\alph{enumi})}
+    \renewcommand{\labelenumii}{\roman{enumii}.}
+}
+
+\newcommand\solnheader{
+\mischeader{Assignment \thehomework}{SOLUTIONS}
+\renewcommand{\labelenumi}{(\alph{enumi})}
+\renewcommand{\labelenumii}{\roman{enumii}.}
+}
+
+\newcommand\sectionheader{
+\mischeader{\thelectitle\\Section and Practice Problems}{\thelecdate}
+\renewcommand{\labelenumi}{(\alph{enumi})}
+\renewcommand{\labelenumii}{\roman{enumii}.}
+}
+
+\newcommand\mischeader[2]{
+\thispagestyle{empty}
+\fancyhead[L]{#1}
+\begin{center}
+\textbf{University of Massachusetts Lowell --- 
+Comp 3010: Organization of Programming Languages} \\[1.0ex]
+{\large
+\textbf{#1} \\[1.5ex]
+\ifthenelse{\equal{#2}{}}
+{
+}{
+#2\\
+}
+}
+\hrulefill\\
+\end{center}
+}
+
+\newcommand\lecheader{
+\thispagestyle{empty}
+\fancyhead[L]{Lecture \thelecture}
+\fancyhead[R]{\thelectitle}
+\begin{center}
+{\small University of Massachusetts Lowell --- Comp 3010: Organization of Programming Languages \\[1.5ex]}
+{\large
+\textbf{\thelectitle} \\[1.5ex]
+{Lecture \thelecture  \hfill \thelecdate}}\\
+\hrulefill\\
+\end{center}}
+
+
+%%% Questions
+ \newenvironment{question}[2]%
+ {\section{#1\hfill{\rm\normalsize #2}}}%
+ {}%
+
+\newcounter{subquestion}[section]
+\renewcommand*{\thesubquestion}{\thesection(\alph{subquestion})}
+\newenvironment{subquestion}%
+{\refstepcounter{subquestion}\begin{enumerate}\item[(\alph{subquestion})]}%
+{\end{enumerate}}%
+
+\newcounter{subsubquestion}[subquestion]
+\renewcommand*{\thesubsubquestion}{\thesubquestion.\roman{subsubquestion}}
+\newenvironment{subsubquestion}%
+{\refstepcounter{subsubquestion}\begin{enumerate}\item[(\roman{subsubquestion})]}%
+{\end{enumerate}}%
+
+\newcommand\note[1]{\textbf{\color{red}[[\textit{#1}]]}}
+\newcommand\todo[1]{\note{TODO: #1}}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%% Programming language macros
+
+
+%%% MACROS for typesetting program constructs
+%%% Syntactic objects are keywords in all caps
+\newcommand\impfnt[1]{\mbox{\rm\textsf{\textbf{#1}}}}
+\newcommand{\IF}[1][\impfnt]{#1{if}}
+\newcommand{\THEN}[1][\impfnt]{#1{then}}
+\newcommand{\ELSE}[1][\impfnt]{#1{else}}
+\newcommand{\SKIP}[1][\impfnt]{#1{skip}}
+\newcommand{\WHILE}[1][\impfnt]{#1{while}}
+\newcommand{\DO}[1][\impfnt]{#1{do}}
+\newcommand{\BREAK}[1][\impfnt]{#1{break}}
+\newcommand{\UNTIL}[1][\impfnt]{#1{until}}
+\newcommand{\TRUE}{\impfnt{true}}
+\newcommand{\FALSE}{\impfnt{false}}
+\newcommand{\FOR}{\impfnt{for}}
+\newcommand{\TO}{\impfnt{to}}
+\newcommand{\NOT}{\impfnt{not}}
+\newcommand{\AND}{\impfnt{and}}
+\newcommand{\OR}{\impfnt{or}}
+\newcommand{\cond}[4][\impfnt]{\ensuremath{\IF[#1] \; #2 \;\THEN[#1]\; #3 \;\ELSE[#1]\; #4}}
+\newcommand{\while}[3][\impfnt]{\ensuremath{\WHILE[#1] \; #2 \;\DO[#1]\; #3}}
+\newcommand{\until}[3][\impfnt]{\ensuremath{\DO[#1] \; #2 \;\UNTIL[#1]\; #3}}
+\newcommand{\code}[1]{\ensuremath{\mathsf{#1}}}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% some Java specific macros
+\newcommand\javafnt\impfnt
+\newcommand{\CLASS}{\javafnt{class}}
+\newcommand{\EXTENDS}{\javafnt{extends}}
+\newcommand{\RETURN}{\javafnt{return}}
+\newcommand{\INT}{\javafnt{int}}
+\newcommand{\BOOLEAN}{\javafnt{boolean}}
+\newcommand{\FLOAT}{\javafnt{float}}
+\newcommand{\IMPLEMENTS}{\javafnt{implements}}
+\newcommand{\PROTECTED}{\javafnt{protected}}
+\newcommand{\PUBLIC}{\javafnt{public}}
+\newcommand{\INTERFACE}{\javafnt{interface}}
+\newcommand{\ABSTRACT}{\javafnt{abstract}}
+\newcommand{\return}[1]{\RETURN \: #1}
+\newcommand{\jint}{\INT \: }
+\newcommand{\jfloat}{\FLOAT \:}
+\newcommand{\jbool}{\BOOLEAN \:}
+\newcommand{\jclass}[3]{
+\ensuremath{
+\begin{array}{l}
+\CLASS \: #1 \:\EXTENDS \: #2 \; \{\\
+\:\:\:\: #3 \\
+\}
+\end{array}
+}}
+\newcommand{\jaclass}[3]{
+\ensuremath{
+\begin{array}{l}
+\ABSTRACT \: \CLASS \: #1 \:\IMPLEMENTS \: #2 \; \{\\
+\:\:\:\: #3 \\
+\}
+\end{array}
+}}
+
+
+\newcommand{\jfunc}[2]{#1\: \{ #2 \}}
+\newcommand{\jinter}[2]{
+\ensuremath{
+\begin{array}{l}
+\INTERFACE \: #1 \; \{\\
+\:\:\:\: #2 \\
+\}
+\end{array}
+}}
+
+\newcommand{\jbclass}[2]{
+\ensuremath{
+\begin{array}{l}
+\CLASS \: #1 \; \{\\
+\:\:\:\: #2 \\
+\}
+\end{array}
+}}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newcommand{\T}[1]{\texttt{#1}}
+\newcommand{\caret}{\ensuremath{^\wedge}}
+
+%%% MACROS for typesetting configurations
+\newcommand{\config}[2]{\ensuremath{\langle #1,\, #2 \rangle}}
+\newcommand{\configB}[4]{\ensuremath{\langle #1,\, #2,\, #3,\, #4 \rangle}}
+\newcommand{\stepsto}{\Downarrow}
+\newcommand{\stepsone}{\longrightarrow}
+\newcommand\sub[1]{_{\mbox{\scriptsize #1}}}
+\newcommand\subst[3]{{\ensuremath #1\{#2/#3\}}}
+\newcommand\definedas{\triangleq}
+\newcommand\translatesto{\;\;\longmapsto\;\;}
+\newcommand\fn{\ensuremath\lambda}
+\newcommand{\defeq}{\definedas}
+%%% Some things useful for denotational semantics
+\newcommand\FV[1]{\nm{FV}(#1)}
+\newcommand\SB[1]{[\![#1]\!]} % put double brackets around the argument
+\newenvironment{SBE}{\left[\!\!\!\!\left[\begin{array}{c}}%
+{\end{array}\right]\!\!\!\!\right]}
+\newcommand\bigSB[1]{\begin{SBE}#1\end{SBE}}
+\newcommand\Tr[2]{\ensuremath{{\cal #1}\SB{#2}}}
+\newcommand\C[1]{\Tr{C}{#1}}
+\newcommand\Cr[1]{{\cal C}\SB{#1}\rho}
+\newcommand\mathif[3]{\mathit{if}~#1~\mathit{then}~#2~\mathit{else}~#3}
+\newcommand\ini[1]{\nm{in}_{\mbox{\scriptsize{#1}}}}
+\newcommand\inj[2]{\nm{in}_{\mbox{\scriptsize\nm{#1}$\leftarrow$\nm{#2}}}}
+\newcommand\nm[1]{\ensuremath{\mathit{#1}}}
+\newcommand\lm[3]{\lambda#1\in#2\,.\,#3}
+\newcommand\fnm[1]{\fbox{\sl #1}\,}
+\newcommand{\Te}[1]{\ensuremath{\mathcal{T}\SB{#1}}} % "translation of"
+\newcommand\join{\ensuremath\bigsqcup}
+\newcommand\dq[1]{\mbox{``}#1\mbox{''}}
+\newcommand\sidecond[1]{\qquad\mbox{(#1)}}
+\newcommand\lift[1]{\ensuremath{\lfloor #1 \rfloor}}
+\newcommand{\Set}[1]{{\textbf{#1}}}
+\newcommand{\dom}{\mbox{dom}}
+\newcommand{\Nat}{\mathbb{N}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand\mquote[1]{\textrm{``}#1\textrm{''}}
+\newcommand{\partialfn}{\rightharpoonup}
+
+\newcommand{\lamfnt}[1]{\textsf{#1}}
+\newcommand{\hole}{\ensuremath{[\cdot]}}
+\newcommand{\inl}{\ensuremath{\lamfnt{in}_\lamfnt{left}~}}
+\newcommand{\inr}{\ensuremath{\lamfnt{in}_\lamfnt{right}~}}
+\newcommand{\case}[3]{\ensuremath{\lamfnt{case}~#1~\lamfnt{of}~#2|#3}}
+\newcommand{\letexp}[3]{\ensuremath{\lamfnt{let}~#1=#2~\lamfnt{in}~#3}}
+
+\newcommand{\alloc}[1]{\lamfnt{ref}~#1}
+\newcommand{\refty}[1]{#1~\typ{ref}}
+\newcommand{\deref}[1]{{!}#1}
+
+%%% macros for types
+\newcommand\lam[2]{\ensuremath{\lambda#1.\,#2}}
+\newcommand\Lam[2]{\ensuremath{\Lambda#1.\,#2}}
+\newcommand\arrow{\ensuremath\rightarrow}
+\newcommand{\typ}[1]{\lamfnt{\textbf{#1}}}
+\newcommand{\ty}{\ensuremath{\!:\!}}
+\newcommand{\subty}{\ensuremath{\leq}}
+\newcommand{\proves}{\ensuremath{\vdash}}
+
+\newcommand{\Rule}[2]{\infer{#2}{#1}}
+\newcommand{\RuleSide}[3]{\infer[#3]{#2}{#1}}
+
+%%%% macros for Hoare logic
+\newcommand{\hrtrp}[4][~]{\{ #2 \}{#1}#3{#1}\{ #4 \}}
+
+%%%% macros for inference rules
+\makeatletter
+  \newcommand{\addToLabel}[1]{%
+    \protected@edef\@currentlabel{\@currentlabel#1}%
+  }
+\makeatother
+
+\newcounter{rule}
+\renewcommand{\therule}{}
+\newcommand{\rulename}[1]{{\textsc{#1}}}
+
+\newcommand{\infrule}[4][]{%
+  \ensuremath{
+  \refstepcounter{rule}%
+  \addToLabel{\rulename{#1}}%
+   \raisebox{1.7ex}{\rulename{#1}\:}
+\begin{array}[b]{@{}l@{}}%
+   \begin{array}[b]{c}
+   #2\raisebox{0ex}[2.1ex][1.1ex]{\strut}\\
+   \hline
+   \raisebox{0ex}[2.1ex]{\strut}#3%
+   \end{array}%
+   \raisebox{1.7ex}{\:#4}
+  \end{array}}}
+
+\newcommand{\elidedprooftree}[1][]{\ensuremath{\vdots{}^{#1}}}
+\newcommand{\derives}{\Vdash}
+
+%%%% Theorems, lemmas, etc.
+\theoremstyle{plain}
+\newtheorem{theorem}{Theorem}
+\newtheorem*{theorem*}{Theorem}
+\newtheorem{property}{Property}
+\newtheorem{lemma}{Lemma}
+\newtheorem*{lemma*}{Lemma}
+\newtheorem{corollary}{Corollary}
+
+\theoremstyle{definition}
+\newtheorem{example}{Example}
+\newtheorem*{example*}{Example}
+\newtheorem{definition}{Definition}
+\newtheorem*{definition*}{Definition}
+

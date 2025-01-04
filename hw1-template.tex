@@ -1,0 +1,146 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage{plcourse}
+\usepackage{ttquot}
+\usepackage{proof}
+\usepackage{stmaryrd}
+\usepackage{angle}
+\usepackage{amssymb}
+\usepackage{hyperref}
+\usepackage{graphicx}
+\usepackage{tikz}
+\usepackage{tikz-qtree}
+\usepackage{xspace}
+
+
+\homework{1}
+
+
+
+\begin{document}
+\hwsubheader
+
+
+% %%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+%    Cover page
+%
+%
+\vspace{5cm}
+{\LARGE
+\begin{tabular}{rp{0.6\linewidth}}
+  Name:&\todo{PUT YOUR NAME HERE}\\
+  UML ID:&\todo{PUT YOUR UML ID HERE}\\
+  Collaborators:&{\normalsize
+    \todo{Put your collaborators here, if any.}
+    }
+\end{tabular}
+}
+
+\vfill
+\textit{Make sure that the remaining pages of this assignment do not contain any identifying information.}
+\vfill
+
+
+% %%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+%    Question 1
+%
+%
+
+\newpage
+\begin{question}{Small-Step Semantics Warm-up}{(15 points)}
+
+
+%%   Here are some useful macros/code for this questions. Try uncommenting them to see what they do.
+
+  \begin{align*}
+  t &::= \TRUE \mid \FALSE \mid \cond{t}{t}{t} \\
+  v & ::= \TRUE \mid \FALSE
+\end{align*}
+
+  
+  \infrule[Name]
+          {
+            a_1 \in A \quad a_2 \in A
+          }
+          {
+            a \in A
+          }
+          {
+            side condition
+          }
+
+
+
+  %% \infrule[M]{  \infrule[N]{A \quad B}{C}{}  \quad D}{E}{}
+  %% \\
+
+  %% \infrule[M]{  \infrule[N]{A \quad B}{C}{}  \quad D}{E}{}
+
+
+%%    \[
+%%    <e, \sigma> \stepsone <e', \sigma'>
+%%    \]
+
+%%    \[
+%%    <e, \sigma> \stepsto <n, \sigma'>
+%%    \]
+
+           
+        
+  \begin{subquestion}
+    \todo{Answer Question {\thesubquestion} here.}
+  \end{subquestion}
+  \begin{subquestion}
+    \todo{Answer Question {\thesubquestion} here.}
+  \end{subquestion}
+  \begin{subquestion}
+
+%% Uncomment the below line to see how to write multiple steps with text above the step operator.
+    
+%%    \[ t \stepsonetext{rulename} t' \stepsonetext{rulename} t'' \stepsonetext{rulename} \dots \]
+    
+    \todo{Answer Question {\thesubquestion} here.}
+  \end{subquestion}
+\end{question}
+
+% %%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+%    Question 2
+%
+%
+
+\newpage
+  \begin{question}{Boolean Arithmetic Language}{(15 points)}
+
+    %% \begin{align*}
+    %%   \impfnt{n} & \in \Z \\
+    %%   t &::= \dots \mid \impfnt{n}  \mid t_1 + t_2 \\
+    %%   v & ::= \dots \mid \impfnt{n}
+    %% \end{align*}
+
+  %% Question 2a
+  \begin{subquestion}
+    \todo{Answer Question {\thesubquestion} here.}
+  \end{subquestion}
+
+  %% Question 2b
+  \begin{subquestion}
+    \todo{Answer Question {\thesubquestion} here.}
+  \end{subquestion}
+
+  %% Question 2c
+  \begin{subquestion}
+
+%% Uncomment the below line to see how to write multiple steps with text above the step operator.
+
+%% \[ 1+2+3 \stepsonetext{rulename} ?? \stepsonetext{rulename} ??  \dots \]
+    
+    \todo{Answer Question {\thesubquestion} here.}
+  \end{subquestion}
+
+\end{question}
+
+
+\end{document}

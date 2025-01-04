@@ -1,0 +1,82 @@
+%Given to students
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage{plcourse}
+\usepackage{answer}
+\usepackage{ttquot}
+\usepackage{proof}
+\usepackage{stmaryrd}
+\usepackage{angle}
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{hyperref}
+\usepackage{graphicx}
+\usepackage{tikz}
+\usepackage{tikz-qtree}
+\usepackage{xspace}
+\usepackage{xcolor}
+\usepackage{listings}
+
+
+\homework{8}
+
+
+\begin{document}
+\hwsubheader
+
+\vspace{5cm}
+{\LARGE
+\begin{tabular}{rp{0.6\linewidth}}
+  Name:&\todo{Add your name here}\\
+  UML ID:&\todo{Add your student ID here}\\
+  Collaborators:&{\normalsize
+    \todo{Put your collaborators here, if any.}
+    }
+\end{tabular}
+}
+
+\vfill
+\textit{Make sure that the remaining pages of this assignment do not contain any identifying information.}
+\vfill
+
+\newpage
+
+
+
+% Use the \infrule macro for neatly typeset inference rules.
+% Syntax:
+% \infrule[<RULE-NAME>]  % Replace <RULE-NAME> with the rule's name
+%    {<Premises>}         Premises of the rule go here
+%    {<Conclusion>}       Conclusion of the rule
+%    {<Side Condition>}   Side condition, if any (leave blank if not needed)
+
+% Use macros for writing typing judgments directly:
+% Uncomment to see how this render
+% $\Gamma \vdash e : \tau ~ \triangleright ~ $C
+
+% Try to see how $\Gamma, \vdash, \tau$ render
+
+
+\begin{question}{Type Inference}{(30 points)}
+
+% Uncomment to see how this rule renders
+% \infrule[A]
+% {\Gamma, x \mapsto \tau, f \mapsto X \vdash e_1 : \tau_1 \quad \Gamma, f \mapsto X \vdash e_2 : \tau_2}
+% {\Gamma \vdash \texttt{A } f = \lambda x:\tau. e_1 \texttt{ in } e_2 : \tau_2}
+% {where X = $\tau \mapsto \tau_1$}
+
+\begin{subquestion} {Inference rules for pairs and projection}
+    % Start your answer here
+\end{subquestion}
+
+\begin{subquestion} {Inference rules for conditionals and integer inequality}
+    % Start your answer here
+\end{subquestion}
+
+\begin{subquestion} {Inference rules for let}
+    % start your answer here
+\end{subquestion}
+
+\end{question}
+
+\end{document}
